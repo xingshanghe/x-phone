@@ -1,0 +1,19 @@
+# =============================================================================
+# 构建期追加到 /system/build.prop 的属性（可选）
+#
+# 与 runtime-ro.prop 的区别：
+#   build.prop 方式  -> 写进镜像层，重启仍在，但改一次要重建镜像
+#   runtime-ro.prop  -> 每次启动注入，改完 restart 即可（推荐）
+#
+# 用法（在宿主机上用 docker exec 一次性烧写，或在 Dockerfile 里加一行 COPY + cat 追加）：
+#   docker exec -it <容器> sh -c 'cat /xphone/props/build-extra.prop >> /system/build.prop'
+#   docker commit <容器> xphone/android:14-custom-baked
+# =============================================================================
+
+persist.sys.timezone=Asia/Shanghai
+persist.sys.locale=zh-CN
+persist.sys.language=zh
+persist.sys.country=CN
+ro.product.locale=zh-CN
+ro.product.locale.language=zh
+ro.product.locale.region=CN

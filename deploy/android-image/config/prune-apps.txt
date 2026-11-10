@@ -1,0 +1,45 @@
+# =============================================================================
+# 精简系统应用清单（相对 /system 的路径，一行一个，# 开头为注释）
+# 会在构建期（Dockerfile L2）与容器启动前（entrypoint 3.4）各执行一次，可热调整。
+#
+# ⚠ 风险提示：
+#   * 删除不会让镜像变小（overlayfs whiteout），但能减少开机扫描、内存占用与后台服务。
+#   * 下面带 [谨慎] 的项被部分系统服务或其他应用依赖，删除前请在单实例上验证。
+#   * 建议做法：先全部注释，逐个打开，每次 docker restart 后观察 logcat 有无 FATAL。
+# =============================================================================
+
+# 浏览器与邮件类
+app/Browser2
+app/Email
+app/Exchange2
+
+# 媒体与图库类 [谨慎：部分应用通过 Gallery 选择图片]
+app/Gallery2
+app/Music
+app/MusicFX
+
+# 工具类
+app/BasicDreams
+app/BookmarkProvider
+app/HTMLViewer
+app/EmergencyInfo
+app/Traceur
+app/Stk
+app/WAPPushManager
+app/LiveWallpapersPicker
+
+# 日历与时钟 [谨慎：闹钟/日历 Provider 有依赖]
+# app/Calendar
+# app/DeskClock
+
+# 打印与搜索（保留可提升兼容性，按需删除）
+# app/PrintSpooler
+# app/QuickSearchBox
+
+# 替换桌面时打开（把自己的 Launcher APK 放 config/apps/system/ 后删除原生桌面）
+# priv-app/Launcher3
+
+# 常见瘦身目录（非 APK，按需要打开；删除前先 du -sh 评估）
+# media/audio/ringtones
+# media/audio/alarms
+# media/audio/notifications

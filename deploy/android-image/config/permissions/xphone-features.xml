@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  系统能力声明：PackageManager.hasSystemFeature() 的数据来源。
+  由 entrypoint.sh 复制到 /system/etc/permissions/。
+
+  ⚠ 原则：只声明"应用会查询但没有真实 HAL 也不会崩"的能力。
+     camera / sensor 一类默认注释 —— 声明了却没有真实设备，应用真去调用时会崩溃。
+     若你的业务只是"让检测通过"，可以打开；若应用会真调用，请保持注释。
+-->
+<permissions>
+    <!-- 屏幕与交互（安全） -->
+    <feature name="android.hardware.touchscreen" />
+    <feature name="android.hardware.touchscreen.multitouch" />
+    <feature name="android.hardware.touchscreen.multitouch.distinct" />
+    <feature name="android.hardware.screen.portrait" />
+    <feature name="android.hardware.screen.landscape" />
+    <feature name="android.hardware.faketouch" />
+
+    <!-- 连接能力（安全：声明后应用只是查询，调用失败会被正常降级） -->
+    <feature name="android.hardware.wifi" />
+    <feature name="android.hardware.wifi.direct" />
+    <feature name="android.hardware.bluetooth" />
+    <feature name="android.hardware.bluetooth_le" />
+    <feature name="android.hardware.ethernet" />
+    <feature name="android.hardware.usb.accessory" />
+    <feature name="android.hardware.usb.host" />
+
+    <!-- 电话与短信：提升"像手机"的程度；无真实 RIL 时 getDeviceId 仍返回空 -->
+    <feature name="android.hardware.telephony" />
+    <feature name="android.hardware.telephony.gsm" />
+    <feature name="android.hardware.telephony.cdma" />
+    <feature name="android.hardware.telephony.data" />
+
+    <!-- 定位：声明后应用会走 location 服务，需自行注入 mock location -->
+    <!-- <feature name="android.hardware.location" /> -->
+    <!-- <feature name="android.hardware.location.gps" /> -->
+    <!-- <feature name="android.hardware.location.network" /> -->
+
+    <!-- 音频 / 存储（安全） -->
+    <feature name="android.hardware.audio.output" />
+    <feature name="android.hardware.audio.low_latency" />
+    <feature name="android.hardware.microphone" />
+
+    <!-- 以下会引发真实调用，默认不开 -->
+    <!-- <feature name="android.hardware.camera" /> -->
+    <!-- <feature name="android.hardware.camera.any" /> -->
+    <!-- <feature name="android.hardware.camera.autofocus" /> -->
+    <!-- <feature name="android.hardware.camera.front" /> -->
+    <!-- <feature name="android.hardware.sensor.accelerometer" /> -->
+    <!-- <feature name="android.hardware.sensor.gyroscope" /> -->
+    <!-- <feature name="android.hardware.sensor.proximity" /> -->
+    <!-- <feature name="android.hardware.sensor.stepcounter" /> -->
+    <!-- <feature name="android.hardware.nfc" /> -->
+    <!-- <feature name="android.hardware.fingerprint" /> -->
+    <!-- <feature name="android.hardware.biometrics.face" /> -->
+
+    <!-- 平台软件能力 -->
+    <feature name="android.software.app_widgets" />
+    <feature name="android.software.backup" />
+    <feature name="android.software.print" />
+    <feature name="android.software.voice_recognizers" />
+    <feature name="android.software.webview" />
+    <feature name="android.software.input_methods" />
+    <feature name="android.software.picture_in_picture" />
+    <feature name="android.software.activities_on_secondary_displays" />
+</permissions>

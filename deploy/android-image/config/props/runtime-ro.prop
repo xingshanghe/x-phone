@@ -1,0 +1,19 @@
+# =============================================================================
+# 运行时追加的只读属性：每行一条 ro.xxx=yyy，由 entrypoint.sh 作为 /init 参数注入
+# 说明：redroid 会把 /proc/self/cmdline 中以 ro. 开头的键直接写入属性系统（init 阶段生效），
+#       因此这里的属性**不需要 Magisk / resetprop**，也不需要重建镜像。
+# 优先级：本文件高于 config/device.env，低于 docker compose 的 command 追加参数
+# =============================================================================
+
+# 厂商定制属性（示例，按需打开或替换）
+# ro.config.ringtone=Ring_Synth_04.ogg
+# ro.com.google.clientidbase=android-google
+# ro.opengles.version=196610
+# ro.sf.lcd_density=420
+
+# 关闭首次开机向导（云手机无交互场景下强烈建议）
+ro.setupwizard.mode=DISABLED
+ro.com.android.prov_mobiledata=0
+
+# 隐藏状态栏中的虚拟按键/导航栏（按机型观感调整）
+# qemu.hw.mainkeys=1

@@ -1,0 +1,26 @@
+# =============================================================================
+# prod 覆盖层（Linux 生产实例）：在 docker-compose.yml 之上叠加
+#
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#   或：./scripts/up.sh prod          # 会自动预检 Linux + binder + arm64
+#   需要 GPU 直通时：./scripts/up.sh prod --gpu
+#
+# 只放「与 dev 不同」的项：资源按生产规格、异常自动拉起、日志更克制。
+# 加固类参数（STEALTH / SELINUX / ROOT_MODE…）在 config/profiles/prod.env。
+# =============================================================================
+
+services:
+  android:
+    container_name: "${CONTAINER_NAME:-xphone-android-01}"
+
+    cpus: "${CPU_LIMIT:-2.0}"
+    mem_limit: "${MEM_LIMIT:-4g}"
+
+    restart: always
+    stop_grace_period: 60s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

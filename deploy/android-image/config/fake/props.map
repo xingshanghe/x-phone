@@ -1,0 +1,25 @@
+# =============================================================================
+# native 层属性覆盖表（仅供 LD_PRELOAD hook 库使用）
+# 命中后 __system_property_get() 直接返回这里的值，绕过 Java 层无法绕开的 native 检测。
+#
+# 与 runtime-ro.prop 的区别：
+#   runtime-ro.prop  只在 init 阶段注入 ro.* 属性区（覆盖不了非 ro 属性、也覆盖不了
+#                    检测方自带的 native 兜底逻辑）
+#   props.map        在每次 native 调用时拦截，可以覆盖任意 key（含 qemu.*、init.svc.*）
+#
+# ★ 只放"确有必要"的项：表里每多一条，就多一处可能与真实行为不一致的地方。
+# =============================================================================
+
+ro.kernel.qemu=0
+qemu.hw.mainkeys=0
+qemu.sf.lcd_density=0
+init.svc.qemu-props=
+
+# USB / 调试状态：真机插着电脑时常见形态
+sys.usb.state=mtp,adb
+sys.usb.config=mtp,adb
+
+# 安全与状态类（真机常见值）
+ro.boot.vbmeta.device_state=locked
+ro.boot.flash.locked=1
+ro.boot.verifiedbootstate=green

@@ -1,0 +1,8 @@
+# x-phone does not start MySQL, Redis, or MinIO.
+# Local development uses the containers already running on this machine:
+#   mysql-prod  127.0.0.1:3306  database xphone
+#   redis-prod  127.0.0.1:6379  logical database 1
+#   minio-prod  127.0.0.1:9000  bucket xphone
+# `make compose-up` only creates that database. It does not start or change those containers.
+name: xphone
+services: {}

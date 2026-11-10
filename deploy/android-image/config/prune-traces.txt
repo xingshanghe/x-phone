@@ -1,0 +1,28 @@
+# =============================================================================
+# 容器 / 模拟器痕迹清理清单（相对 / 的路径，一行一个，# 开头为注释）
+# entrypoint 在 exec /init 之前执行，删除失败不影响启动。
+#
+# 用法：先在跑起来的容器里执行一次「痕迹扫描」，把命中的路径抄到下面：
+#   adb shell ls /dev | grep -iE 'qemu|goldfish'
+#   adb shell ls /system/bin /system/lib64 /vendor/lib64 | grep -iE 'qemu|goldfish|redroid|ndk_translation|houdini'
+#   adb shell getprop | grep -iE 'qemu|goldfish|ranchu|redroid|emulator'
+# =============================================================================
+
+# ---- 模拟器设备节点（有就删，没有就忽略）----
+dev/qemu_pipe
+dev/goldfish_pipe
+dev/goldfish_fb
+dev/qemu_trace
+
+# ---- 模拟器 / 容器特征可执行文件（按扫描结果启用）----
+# system/bin/qemu-props
+# system/bin/goldfish-setup
+# system/bin/redroid-setup
+# system/lib64/libndk_translation.so      # 只有 x86 宿主才需要；arm64 宿主请删除
+# system/lib/libndk_translation.so
+# system/lib64/libhoudini.so
+
+# ---- 容器特征配置 / 脚本（按扫描结果启用）----
+# system/etc/init/redroid.rc
+# system/etc/redroid.prop
+# vendor/etc/init/redroid.rc

@@ -1,0 +1,67 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "x-phone: server",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/server",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "GOTOOLCHAIN": "local",
+                "XPHONE_HTTP_ADDR": ":18110",
+                "XPHONE_ADMIN_USER": "admin",
+                "XPHONE_ADMIN_PASSWORD": "admin123",
+                "XPHONE_DB_DRIVER": "mysql",
+                "XPHONE_DSN": "xphone:xphone@tcp(127.0.0.1:3306)/xphone?charset=utf8mb4&parseTime=true&loc=Local",
+                "XPHONE_DATA_DIR": "${workspaceFolder}/data",
+                "XPHONE_PROFILES_DIR": "${workspaceFolder}/profiles",
+                "XPHONE_REDIS_ADDR": "127.0.0.1:6379",
+                "XPHONE_REDIS_PASSWORD": "123456",
+                "XPHONE_REDIS_DB": "1",
+                "XPHONE_MINIO_ENDPOINT": "127.0.0.1:9000",
+                "XPHONE_MINIO_ACCESS_KEY": "minioadmin",
+                "XPHONE_MINIO_SECRET_KEY": "minioadmin@123",
+                "XPHONE_MINIO_BUCKET": "xphone"
+            },
+            "showLog": true
+            // "preLaunchTask": "web: dev"
+        },
+        {
+            // 先 make run-server，在控制台注册主机后拿到 token
+            // XPHONE_AGENT_TOKEN=xxx code . 或在 shell 里 export
+            "name": "x-phone: agent (simulate)",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/cmd/agent",
+            "args": [
+                "-server",
+                "http://127.0.0.1:18110",
+                "-token",
+                "${env:XPHONE_AGENT_TOKEN}",
+                "-pythonpath",
+                "${workspaceFolder}/tools/phone",
+                "-simulate"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "GOTOOLCHAIN": "local"
+            },
+            "showLog": true
+        },
+        {
+            "name": "x-phone: test current package",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "GOTOOLCHAIN": "local"
+            },
+            "showLog": true
+        }
+    ]
+}

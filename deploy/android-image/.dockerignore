@@ -1,0 +1,9 @@
+# 构建上下文裁剪：避免把运行时数据、日志等无关文件打进镜像层
+runtime/
+**/runtime/
+**/.DS_Store
+**/__pycache__/
+**/*.log
+**/*.png.bak
+.git/
+web/node_modules/

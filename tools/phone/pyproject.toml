@@ -1,0 +1,10 @@
+[project]
+name = "xphone-phone"
+version = "0.1.0"
+description = "Android cloud phone node tools for x-phone"
+requires-python = ">=3.10"
+dependencies = ["websockets>=12"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,20 @@
+{
+  "id": "samsung_s23",
+  "brand": "samsung",
+  "manufacturer": "samsung",
+  "model": "SM-S911B",
+  "device": "dm1q",
+  "product": "dm1qxxx",
+  "fingerprint": "samsung/dm1qxxx/dm1q:14/UP1A.231005.007/S911BXXS4BXA1:user/release-keys",
+  "release": "14",
+  "sdk": "34",
+  "width": 1080,
+  "height": 2340,
+  "dpi": 425,
+  "locale": "en-US",
+  "timezone": "Europe/London",
+  "gpu": "Adreno 740",
+  "cpuCores": 8,
+  "memoryMb": 8192,
+  "touchPoints": 10
+}

@@ -1,0 +1,24 @@
+# =============================================================================
+# dev 覆盖层（本地测试 / 调试）：在 docker-compose.yml 之上叠加
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+#   或：./scripts/up.sh dev
+#
+# 只放「与 prod 不同」的项：资源更小、容器名不同（避免与 prod 实例冲突）、
+# 日志保留更多（排障要看）。其余参数仍在 docker-compose.yml / config/device.env。
+# =============================================================================
+
+services:
+  android:
+    container_name: "${CONTAINER_NAME:-xphone-android-dev}"
+
+    cpus: "${CPU_LIMIT:-1.0}"
+    mem_limit: "${MEM_LIMIT:-2g}"
+
+    restart: unless-stopped
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

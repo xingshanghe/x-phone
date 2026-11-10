@@ -1,0 +1,15 @@
+# =============================================================================
+# GPU 直通附加层（可选）：宿主存在 /dev/dri/renderD* 时才叠加
+#
+#   ./scripts/up.sh prod --gpu
+#   等价：docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+#                        -f docker-compose.gpu.yml up -d
+#
+# 叠加后需在 config/profiles/prod.env（或 device.env）里设 GPU_MODE=host 才真正走硬件渲染；
+# GPU_MODE=auto 也会自动探测，但显式 host + 指定 GPU_NODE 更可控。
+# =============================================================================
+
+services:
+  android:
+    volumes:
+      - /dev/dri:/dev/dri

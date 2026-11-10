@@ -1,0 +1,92 @@
+# =============================================================================
+# x-phone · 定制 Android 容器（单实例模板）
+#
+# 使用： cp .env.example .env   # 按需改端口/目录/资源限制
+#        docker compose up -d
+#
+# 多实例：复制本文件为 docker-compose.<n>.yml，改 CONTAINER_NAME / ADB_PORT / DATA_DIR，
+#         并给每个实例准备一份 config 目录（不同机型指纹/分辨率）。
+# =============================================================================
+
+services:
+  android:
+    image: "${IMAGE:-xphone/android}:${TAG:-14-custom}"
+    container_name: "${CONTAINER_NAME:-xphone-android-01}"
+
+    # redroid 需要挂载 binder/cgroup/loop 设备，实践上必须用 privileged
+    privileged: true
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined
+
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+    # 设备参数（机型/分辨率/语言时区…）来自 config/device.env
+    env_file:
+      - config/device.env
+
+    # 运行环境分层：dev=本地测试 / prod=Linux 生产
+    # entrypoint 会据此额外加载 config/profiles/<XPHONE_ENV>.env（覆盖 device.env 同名项）
+    # 生产务必显式设成 prod：./scripts/up.sh prod
+    environment:
+      - XPHONE_ENV=${XPHONE_ENV:-dev}
+
+    # 资源上限：按宿主规格调整（建议每实例 2 vCPU / 2–4 GB）
+    cpus: "${CPU_LIMIT:-2.0}"
+    mem_limit: "${MEM_LIMIT:-4g}"
+
+    volumes:
+      # Android 数据分区：必须持久化，否则每次重建容器都会重新初始化系统
+      - "${DATA_DIR:-./runtime/data}:/data"
+      # 定制配置目录（只读挂载即可；改配置只需重启容器，不用重建镜像）
+      - ./config:/xphone:ro
+      # GPU 直通（GPU_MODE=host）时打开，并确保宿主机存在 /dev/dri/renderD*
+      # - /dev/dri:/dev/dri
+
+    ports:
+      # 仅绑定宿主回环，避免 ADB 裸奔到公网；远程访问走 SSH 隧道 / Tailscale / VPN
+      - "${ADB_BIND_ADDR:-127.0.0.1}:${ADB_PORT:-18120}:5555"
+
+    # 追加给 /init 的参数（优先级最高，可覆盖 device.env 生成的同名属性）
+    # command:
+    #   - "androidboot.redroid_width=1080"
+    #   - "androidboot.redroid_height=2400"
+    #   - "ro.product.model=Pixel 8"
+
+    healthcheck:
+      # 用 Android 自带的 /system/bin/sh，避免依赖 /bin/sh
+      test:
+        [
+          "CMD",
+          "/system/bin/sh",
+          "-c",
+          "test \"$(/system/bin/getprop sys.boot_completed)\" = \"1\" && test -f /data/xphone/boot-complete",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ---------------------------------------------------------------------------
+# 可选：浏览器远程画面（ws-scrcpy，需先在本机准备镜像）
+#   git clone https://github.com/NetrisTV/ws-scrcpy && cd ws-scrcpy && npm install
+#   npm start   # 默认 http://<host>:8080，页面里连 <host>:<ADB_PORT>
+# 说明：ws-scrcpy 走 ADB 通道，不需要在 Android 容器里装任何东西。
+# ---------------------------------------------------------------------------
+#  services:
+#    scrcpy-web:
+#      image: node:22-slim
+#      working_dir: /app
+#      command: ["npm", "start", "--", "--port", "8080"]
+#      network_mode: host
+#      volumes:
+#        - ../ws-scrcpy:/app
+#      ports:
+#        - "18130:8080"

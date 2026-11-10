@@ -1,0 +1,20 @@
+{
+  "id": "pixel_8",
+  "brand": "google",
+  "manufacturer": "Google",
+  "model": "Pixel 8",
+  "device": "shiba",
+  "product": "shiba",
+  "fingerprint": "google/shiba/shiba:14/UQ1A.240205.002/11224170:user/release-keys",
+  "release": "14",
+  "sdk": "34",
+  "width": 1080,
+  "height": 2400,
+  "dpi": 420,
+  "locale": "en-US",
+  "timezone": "America/Los_Angeles",
+  "gpu": "Mali-G715",
+  "cpuCores": 9,
+  "memoryMb": 8192,
+  "touchPoints": 10
+}

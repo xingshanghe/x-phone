@@ -1,0 +1,44 @@
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: #1a1c1e;
+  background-size: cover;
+  background-position: center;
+  background-image: url("https://images.unsplash.com/photo-1484242857719-4b9144542727?auto=format&fit=crop&w=1600&q=80");
+}
+
+.form {
+  flex: 0 0 auto;
+  width: min(450px, 100%);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 0;
+  border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+    border-right: 0;
+  }
+}
+
+.eyebrow {
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  color: var(--mantine-primary-color-filled);
+}
+
+.title {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-family: Outfit, var(--mantine-font-family);
+  font-weight: 500;
+  text-align: center;
+  margin-top: var(--mantine-spacing-md);
+  margin-bottom: 50px;
+}

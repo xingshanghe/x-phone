@@ -1,0 +1,6 @@
+data/
+bin/
+*.db
+tools/phone/.venv/
+web/node_modules/
+web/dist/
